@@ -1,1 +1,1 @@
-Remove USB_NOE
+Connect CDC Demo

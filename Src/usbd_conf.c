@@ -78,11 +78,23 @@ extern void SystemClock_Config(void);
 
 void HAL_PCD_MspInit(PCD_HandleTypeDef* pcdHandle)
 {
+  GPIO_InitTypeDef GPIO_InitStruct;
   if(pcdHandle->Instance==USB)
   {
   /* USER CODE BEGIN USB_MspInit 0 */
 
   /* USER CODE END USB_MspInit 0 */
+  
+    /**USB GPIO Configuration    
+    PC9     ------> USB_NOE 
+    */
+    GPIO_InitStruct.Pin = GPIO_PIN_9;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF2_USB;
+    HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
     /* Peripheral clock enable */
     __HAL_RCC_USB_CLK_ENABLE();
 
@@ -104,6 +116,11 @@ void HAL_PCD_MspDeInit(PCD_HandleTypeDef* pcdHandle)
   /* USER CODE END USB_MspDeInit 0 */
     /* Disable Peripheral clock */
     __HAL_RCC_USB_CLK_DISABLE();
+  
+    /**USB GPIO Configuration    
+    PC9     ------> USB_NOE 
+    */
+    HAL_GPIO_DeInit(GPIOC, GPIO_PIN_9);
 
     /* Peripheral interrupt Deinit*/
     HAL_NVIC_DisableIRQ(USB_IRQn);

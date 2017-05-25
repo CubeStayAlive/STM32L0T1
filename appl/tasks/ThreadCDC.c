@@ -84,7 +84,7 @@ void CBDisconnect(void)
 
 void CBBaud(void)
 {
-	is_bauded = false;
+	is_bauded = true;
 }
 
 static unsigned char answer[] = "Hello\015\012";
